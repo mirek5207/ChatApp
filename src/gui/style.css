@@ -1,12 +1,10 @@
-#centerBar{
-    -fx-background-color:#d7d7d7;
-    -fx-background-radius:10px;
-    
+#body{
+    -fx-background-color:linear-gradient(#2f4353, #d2ccc4);
 }
-#leftBarScrollPane{
-    -fx-background-color:transparent;
+.navBar{
+    -fx-background-color:white;
+    -fx-padding:0 10 0 0;
 }
-#leftBarPane{
-    -fx-background-color:#d7d7d7;
-    -fx-background-radius:10px;
+#img{
+    -fx-border-radius:50px;
 }

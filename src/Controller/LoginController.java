@@ -1,57 +1,51 @@
 package Controller;
 
-import javafx.event.ActionEvent;
+import DataBase.DataBase;
+import Other.SceneChanger;
+import Other.SupportForIconButtons;
+import ServerClient.Client;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import sample.Main;
 
 import java.io.IOException;
-
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.Socket;
 
 public class LoginController extends SupportForIconButtons {
-    private static Scene scene;
-    @FXML
-    private TextField login;
 
-    @FXML
-    private TextField password;
+    private InetAddress ip;
+    private Socket socket;
+    private PrintWriter printWriter;
 
-    @FXML
-    void handleRegisterButtonAction(ActionEvent event) {
-        try{
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../gui/register.fxml"));
-            Parent root1 = fxmlLoader.load();
-            scene = new Scene(root1,Main.width,Main.height);
-            scene.getStylesheets().add(getClass().getResource("../gui/login.css").toExternalForm());
-            Main.stage.setScene(scene);
-            Main.stage.show();
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    @FXML private TextField login;
+    @FXML private TextField password;
+    @FXML void handleRegisterButtonAction()
+    {
+        SceneChanger sceneChanger = new SceneChanger("../gui/register.fxml","../gui/login.css");
+        sceneChanger.changeScene();
     }
-    @FXML
-    void handleLoginButtonAction(ActionEvent event) {
-        try{
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../gui/sample.fxml"));
-            Parent root1 = fxmlLoader.load();
-            scene = new Scene(root1,Main.width,Main.height);
-            scene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
-            Main.stage.setScene(scene);
-            Main.stage.show();
-        }catch (IOException e) {
-            e.printStackTrace();
+    @FXML void handleLoginButtonAction() throws IOException {
+        ip = InetAddress.getByName("localhost");
+        socket = new Socket(ip,5056);
+        printWriter = new PrintWriter(socket.getOutputStream());
+        DataBase connection = new DataBase();
+        if(connection.searchData(login.getText(), password.getText())) {
+            SceneChanger sceneChanger = new SceneChanger("../gui/sample.fxml","../gui/style.css");
+            sceneChanger.changeScene();
+            Client client = new Client(login.getText(),socket,printWriter);
+            Main.stage.setUserData(client);
         }
+        else {
+            System.out.println("Dane nie poprawne");
+        }
+        connection.closeConnection();
     }
-    @FXML
-    void handleExitButtonAction(MouseEvent event) {
+    @FXML void handleExitButtonAction()
+    {
         exitWindow();
     }
-    @FXML
-    void handleMinimizeButtonAction(MouseEvent event) { minimizeWindow(); }
-
+    @FXML void handleMinimizeButtonAction() { minimizeWindow(); }
+    @FXML void handleResizeButtonAction() { resizeWindow(); }
 }

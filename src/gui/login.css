@@ -10,6 +10,7 @@
 }
 #borderPane{
     -fx-effect: dropshadow(three-pass-box, #2f4353, 15, 0, 0, 0);
+    -fx-background-color: #E0E0E0;
 }
 .textField{
      -fx-background-color: -fx-control-inner-background;
@@ -17,5 +18,13 @@
 .text{
      -fx-fill: #fff;
 
+}
+.navBar{
+    -fx-background-color:white;
+    -fx-padding:0 10 0 0;
+}
+.navbarButton:hover{
+    -fx-background-color: #e5e5e5;
+    -fx-background-radius:50%;
 }
 

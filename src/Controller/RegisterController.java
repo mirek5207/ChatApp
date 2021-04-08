@@ -1,40 +1,26 @@
 package Controller;
-
-import javafx.event.ActionEvent;
+import DataBase.DataBase;
+import Other.SceneChanger;
+import Other.SupportForIconButtons;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
-import sample.Main;
 
-import java.io.IOException;
+
 
 public class RegisterController extends SupportForIconButtons {
 
-    private static Scene scene;
+    @FXML private TextField login;
+    @FXML private TextField password;
+    @FXML private TextField email;
 
-    @FXML
-    void handleRegisterButtonAction() {
-        try{
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../gui/sample.fxml"));
-            Parent root1 = fxmlLoader.load();
-            scene = new Scene(root1,Main.width,Main.height);
-            scene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
-            Main.stage.setScene(scene);
-            Main.stage.show();
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    @FXML void handleSignUpButtonAction() {
+        DataBase connect = new DataBase();
+        connect.addData("User",login.getText(),password.getText(),email.getText());
+        connect.closeConnection();
+        SceneChanger sceneChanger = new SceneChanger("../gui/login.fxml","../gui/login.css");
+        sceneChanger.changeScene();
     }
-    @FXML
-    void handleExitButtonAction(MouseEvent event) {
-        exitWindow();
-    }
-    @FXML
-    void handleMinimizeButtonAction(MouseEvent event) { minimizeWindow(); }
-
+    @FXML void handleExitButtonAction(MouseEvent event) { exitWindow(); }
+    @FXML void handleMinimizeButtonAction(MouseEvent event) { minimizeWindow(); }
 }
