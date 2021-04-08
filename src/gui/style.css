@@ -1,0 +1,12 @@
+#centerBar{
+    -fx-background-color:#d7d7d7;
+    -fx-background-radius:10px;
+    
+}
+#leftBarScrollPane{
+    -fx-background-color:transparent;
+}
+#leftBarPane{
+    -fx-background-color:#d7d7d7;
+    -fx-background-radius:10px;
+}

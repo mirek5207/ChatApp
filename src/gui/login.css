@@ -1,0 +1,21 @@
+#body{
+    -fx-background-color:linear-gradient(#2f4353, #d2ccc4);
+}
+#leftBar,.button{
+    -fx-background-color:#2f4353;
+    -fx-text-fill: #fff;
+}
+.button:hover{
+    -fx-background-color: #1a252d;
+}
+#borderPane{
+    -fx-effect: dropshadow(three-pass-box, #2f4353, 15, 0, 0, 0);
+}
+.textField{
+     -fx-background-color: -fx-control-inner-background;
+}
+.text{
+     -fx-fill: #fff;
+
+}
+
