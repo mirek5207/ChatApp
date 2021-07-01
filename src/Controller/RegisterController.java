@@ -4,9 +4,6 @@ import Other.SceneChanger;
 import Other.SupportForIconButtons;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-
-
 
 public class RegisterController extends SupportForIconButtons {
 
@@ -21,6 +18,5 @@ public class RegisterController extends SupportForIconButtons {
         SceneChanger sceneChanger = new SceneChanger("../gui/login.fxml","../gui/login.css");
         sceneChanger.changeScene();
     }
-    @FXML void handleExitButtonAction(MouseEvent event) { exitWindow(); }
-    @FXML void handleMinimizeButtonAction(MouseEvent event) { minimizeWindow(); }
+
 }

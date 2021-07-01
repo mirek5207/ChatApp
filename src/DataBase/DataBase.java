@@ -6,6 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class DataBase{
 
@@ -80,6 +83,21 @@ public class DataBase{
             return false;
         }
         return true;
+    }
+    public List<String> searchUserByLogin(String login) {
+        List<String> searchedUsers = new LinkedList<>();
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement("SELECT login FROM ChatAppDataBase.User" + " where lower(login) like ?");
+            preparedStatement.setString(1, "%" + login.toLowerCase() + "%");
+            this.resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                searchedUsers.add(resultSet.getString("login"));
+            }
+        } catch (SQLException e) {
+           e.printStackTrace();
+            System.out.println("nie znaleziono");
+        }
+        return searchedUsers;
     }
     public void closeConnection() {
         try {

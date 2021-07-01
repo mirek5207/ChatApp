@@ -5,25 +5,33 @@ import java.net.Socket;
 
 
 public class Client {
-    private String login;
-    private Socket socket ;
+    public String login;
     private PrintWriter printWriter;
+    private static Client single_instance = null;
 
-    public Client(String login, Socket socket, PrintWriter printWriter){
+    private Client(){
+    }
+    public static Client getInstance()
+    {
+        if (single_instance == null)
+            single_instance = new Client();
+
+        return single_instance;
+    }
+    public void setData(String login,PrintWriter printWriter)
+    {
         this.login = login;
-        this.socket = socket;
         this.printWriter = printWriter;
-
     }
 
     public void sendMessage(String message) {
-        printWriter.println("Message from Client:"+ message + " Socket:"+socket );
+        printWriter.println("Message from Client:"+ message);
         printWriter.flush();
 
     }
     public String getLogin()
     {
-        return login;
+        return this.login;
     }
 
 }

@@ -1,30 +1,53 @@
 #body{
-    -fx-background-color:linear-gradient(#2f4353, #d2ccc4);
+    -fx-background-color:#0d1117;
 }
-#leftBar,.button{
-    -fx-background-color:#2f4353;
+#signInButton{
+    -fx-background-color: teal;
     -fx-text-fill: #fff;
 }
-.button:hover{
-    -fx-background-color: #1a252d;
+#signInButton:hover{
+    -fx-background-color: #00B0B1;
+}
+#signUpButton{
+    -fx-background-color:none;
+    -fx-border-color:teal;
+    -fx-border-width:0.3;
+    -fx-border-radius:7px;
+}
+#signUpButton:hover{
+    -fx-border-color: #00B0B1;
 }
 #borderPane{
-    -fx-effect: dropshadow(three-pass-box, #2f4353, 15, 0, 0, 0);
-    -fx-background-color: #E0E0E0;
+    -fx-background-color: #161b22;
+    -fx-border-color: gray;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-width: 0.4;
+
 }
 .textField{
-     -fx-background-color: -fx-control-inner-background;
+    -fx-background-color: #1e1e1e;
+    -fx-border-width: 0 0 1px 0;
+    -fx-border-color:  gray;
+    -fx-border-radius: 4px;
+    -fx-text-fill: white;
+
+}
+.textField:focused{
+    -fx-border-color:  #588BAE;
+    -fx-border-width: 0 0 1px 0;
 }
 .text{
      -fx-fill: #fff;
 
 }
 .navBar{
-    -fx-background-color:white;
-    -fx-padding:0 10 0 0;
+    -fx-control-inner-background:#161b22;
+    -fx-background-color:#161b22;
+
+    -fx-opacity:1;
 }
 .navbarButton:hover{
     -fx-background-color: #e5e5e5;
-    -fx-background-radius:50%;
 }
 

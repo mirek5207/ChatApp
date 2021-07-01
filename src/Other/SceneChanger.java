@@ -24,6 +24,7 @@ public class SceneChanger  {
             Parent root1 = fxmlLoader.load();
             Scene scene = new Scene(root1, (int) Screen.getPrimary().getBounds().getWidth(), (int) Screen.getPrimary().getBounds().getHeight());
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource(pathCss)).toExternalForm());
+            Main.stage.setMaximized(true);
             Main.stage.setScene(scene);
             Main.stage.show();
         }catch (IOException e) {
