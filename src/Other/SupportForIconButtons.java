@@ -6,8 +6,6 @@ import sample.Main;
 
 public class SupportForIconButtons {
 
-    private int width;
-    private int height;
 
     public void exitWindow(){
         Platform.exit();

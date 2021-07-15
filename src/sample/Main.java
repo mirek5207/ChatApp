@@ -1,6 +1,6 @@
 package sample;
+
 import Other.SceneChanger;
-import ServerClient.Client;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

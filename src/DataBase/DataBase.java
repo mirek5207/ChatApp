@@ -1,12 +1,6 @@
 package DataBase;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,9 +14,9 @@ public class DataBase{
             this.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/sys", "root","password");
             Statement statement = this.connection.createStatement();
             this.resultSet = statement.executeQuery("SELECT * FROM ChatAppDataBase.User");
-            while (resultSet.next()){
+            /*while (resultSet.next()){
                 System.out.println(resultSet.getInt(1)+ resultSet.getString("login") + resultSet.getString("email") + resultSet.getString("password"));
-            }
+            }*/
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
         }
@@ -41,6 +35,37 @@ public class DataBase{
             return false;
         }
 
+    }
+    public int getIdOfUser(String login){
+        int id=0 ;
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement("Select userId From ChatAppDataBase.User where login = ?");
+            preparedStatement.setString(1, login);
+            this.resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                id = resultSet.getInt("userId");
+            }
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        System.out.println(id);
+        return id;
+    }
+    public void addFriendship(String userLogin,String friendLogin){
+        int idUser= getIdOfUser(userLogin);
+        int idFriend= getIdOfUser(friendLogin);
+        System.out.println("user=" + idUser + "friend=" + idFriend);
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement("INSERT INTO ChatAppDataBase.Friendship"  +"( userId1, userId2)" + " VALUES (?,?);");
+            preparedStatement.setInt(1, idUser);
+            preparedStatement.setInt(2, idFriend);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /*public boolean deleteData(String table, String tableId) {
@@ -99,6 +124,41 @@ public class DataBase{
         }
         return searchedUsers;
     }
+    public String searchUserById(Integer id) {
+        String searchedLogin = null;
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement("SELECT login FROM ChatAppDataBase.User" + " where userId like ?");
+            preparedStatement.setInt(1, id);
+            this.resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                searchedLogin = resultSet.getString("login");
+            }
+        } catch (SQLException e) {
+           e.printStackTrace();
+            System.out.println("nie znaleziono");
+        }
+        return searchedLogin;
+    }
+    public List<Integer> searchIdOfFriends(Integer id) {
+        List<Integer> searchedIdOfFriends = new LinkedList<>();
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(
+                    "(SELECT userId2 FROM ChatAppDataBase.Friendship" + " where userId1 like ?) " +
+                    "UNION (SELECT userId1 FROM ChatAppDataBase.Friendship" + " where userId2 like ?) ");
+            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, id);
+            this.resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                searchedIdOfFriends.add(resultSet.getInt("userId2"));
+            }
+        } catch (SQLException e) {
+           e.printStackTrace();
+            System.out.println("nie znaleziono");
+        }
+
+        return searchedIdOfFriends;
+    }
+
     public void closeConnection() {
         try {
             this.connection.close();

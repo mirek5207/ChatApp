@@ -39,7 +39,7 @@
                         <Insets top="20.0" />
                      </padding>
                   </VBox>
-                  <VBox id="leftBar" alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="590.0" prefWidth="251.0" spacing="10.0" style="-fx-opacity: 1;">
+                  <VBox id="leftBar" fx:id="listOfFriends" alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="590.0" prefWidth="251.0" spacing="10.0" style="-fx-opacity: 1;">
                      <children>
                         <HBox maxWidth="-Infinity" prefHeight="23.0" prefWidth="200.0">
                            <children>
@@ -56,7 +56,7 @@
                            </children>
                         </HBox>
                         <TextField id="textField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="200.0" promptText="Wyszukaj konwersacje" />
-                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Prywatne wiadomośći" wrappingWidth="200.28271484375" />
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Prywatne wiadomośći" wrappingWidth="128.0" />
                      </children>
                      <opaqueInsets>
                         <Insets right="20.0" />
@@ -74,7 +74,7 @@
                   <Insets />
                </BorderPane.margin>
                <content>
-                  <VBox fx:id="VBoxForSearchedUserNames" maxWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" spacing="20.0" styleClass="centerBar">
+                  <VBox maxWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" spacing="20.0" styleClass="centerBar">
                      <children>
                         <Text fill="#ffffffc7" strokeType="OUTSIDE" strokeWidth="0.0" text="Dodaj znajomego" wrappingWidth="515.0">
                            <font>
@@ -96,6 +96,14 @@
                               </Button>
                            </children>
                         </HBox>
+                        <VBox fx:id="vBoxForSearchedUserNames" maxWidth="-Infinity" prefHeight="407.0" prefWidth="515.0" spacing="20.0" styleClass="centerBar">
+                           <padding>
+                              <Insets top="30.0" />
+                           </padding>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </VBox>
                      </children>
                      <padding>
                         <Insets left="20.0" top="30.0" />

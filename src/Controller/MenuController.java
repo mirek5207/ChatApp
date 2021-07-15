@@ -1,16 +1,13 @@
 package Controller;
 
 import DataBase.DataBase;
-import Other.SceneChanger;
 import ServerClient.Client;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import sample.Main;
 
 import java.net.URL;
 import java.util.LinkedList;
@@ -20,12 +17,11 @@ import java.util.ResourceBundle;
 
 public class MenuController implements Initializable {
 
-    @FXML private TextArea textField;
-    @FXML private TextArea textArea;
+
     @FXML private TextField searchedUserName;
-    @FXML private TextArea clientData;
     @FXML private TextField userName;
-    @FXML private VBox VBoxForSearchedUserNames;
+    @FXML private VBox vBoxForSearchedUserNames;
+    @FXML private VBox listOfFriends;
 
 
    /* @FXML void handleSendMessage() {
@@ -35,29 +31,56 @@ public class MenuController implements Initializable {
         client.sendMessage(textField.getText());
     }*/
 
-    @FXML
-    void searchUserByLogin(MouseEvent event) {
+    //method is used when searching for a friend to add him to friends
+    @FXML void searchUserByLogin() {
+        vBoxForSearchedUserNames.getChildren().clear();
         List<Button> userList = new LinkedList<>();
-        List<String> userData = new LinkedList<>();
+        List<String> userData;
         DataBase dataBase = new DataBase();
         userData=dataBase.searchUserByLogin(searchedUserName.getText());
-        dataBase.closeConnection();
+        Client client = Client.getInstance();
+        String userLogin = client.getLogin();
 
         for(int i=0;i<userData.size();i++){
-           Button button = new Button();
-           button.setText(userData.get(i));
-           button.getStyleClass().add("addUserButton");
-           userList.add(button);
-           VBoxForSearchedUserNames.getChildren().add(userList.get(i));
+            String friendLogin =userData.get(i);
+            Button button = new Button();
+            button.setText(friendLogin);
+            button.getStyleClass().add("addUserButton");
+            button.setOnAction((ActionEvent e) -> dataBase.addFriendship(userLogin,friendLogin));
+            userList.add(button);
+            vBoxForSearchedUserNames.getChildren().add(userList.get(i));
         }
-
-
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    @Override public void initialize(URL url, ResourceBundle resourceBundle) {
         Client client = Client.getInstance();
         userName.setText("#"+client.getLogin());
+        loadListOfFriends(client.getLogin());
+    }
+    private void loadListOfFriends(String login){
+        List<Integer> idOfFriends;
+        List<String> loginFriends = new LinkedList<>();
+        List<Button> friendsList = new LinkedList<>();
+        DataBase dataBase = new DataBase();
+        Integer userId = dataBase.getIdOfUser(login);
+        System.out.println("idUser:"+ userId);
+        idOfFriends = dataBase.searchIdOfFriends(userId);
+        for(int i = 0 ; i<idOfFriends.size();i++ )
+        {
+            loginFriends.add(dataBase.searchUserById(idOfFriends.get(i)));
+            System.out.println(loginFriends.get(i));
+        }
+        for(int i=0;i<loginFriends.size();i++){
+            String friendLogin =loginFriends.get(i);
+            Button button = new Button();
+            button.setText(friendLogin);
+            button.getStyleClass().add("friendButton");
+            //button.setOnAction((ActionEvent e) -> dataBase.addFriendship(userLogin,friendLogin));
+            friendsList.add(button);
+            listOfFriends.getChildren().add(friendsList.get(i));
+        }
+        dataBase.closeConnection();
+
     }
 
 }
