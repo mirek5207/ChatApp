@@ -92,7 +92,7 @@ public class DataBase{
             return false;
         }
     }*/
-    public boolean searchData(String login, String password) {
+    public boolean checkSignInData(String login, String password) {
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement("SELECT login,password FROM ChatAppDataBase.User" + " where login = ? AND password = ?");
             preparedStatement.setString(1, login);

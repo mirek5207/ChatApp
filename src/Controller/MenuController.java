@@ -21,7 +21,7 @@ public class MenuController implements Initializable {
     @FXML private TextField searchedUserName;
     @FXML private TextField userName;
     @FXML private VBox vBoxForSearchedUserNames;
-    @FXML private VBox listOfFriends;
+    @FXML private VBox vBoxListOfFriends;
 
 
    /* @FXML void handleSendMessage() {
@@ -50,34 +50,28 @@ public class MenuController implements Initializable {
             userList.add(button);
             vBoxForSearchedUserNames.getChildren().add(userList.get(i));
         }
+        client.getListOfFriends();
     }
 
     @Override public void initialize(URL url, ResourceBundle resourceBundle) {
         Client client = Client.getInstance();
         userName.setText("#"+client.getLogin());
-        loadListOfFriends(client.getLogin());
+        loadListOfFriends(client);
     }
-    private void loadListOfFriends(String login){
-        List<Integer> idOfFriends;
-        List<String> loginFriends = new LinkedList<>();
+    private void loadListOfFriends(Client client){
+        List<String> listOfFriends = new LinkedList<>();
+        listOfFriends = client.getListOfFriends();
         List<Button> friendsList = new LinkedList<>();
         DataBase dataBase = new DataBase();
-        Integer userId = dataBase.getIdOfUser(login);
-        System.out.println("idUser:"+ userId);
-        idOfFriends = dataBase.searchIdOfFriends(userId);
-        for(int i = 0 ; i<idOfFriends.size();i++ )
-        {
-            loginFriends.add(dataBase.searchUserById(idOfFriends.get(i)));
-            System.out.println(loginFriends.get(i));
-        }
-        for(int i=0;i<loginFriends.size();i++){
-            String friendLogin =loginFriends.get(i);
+
+        for(int i=0;i<listOfFriends.size();i++){
+            String friendLogin =listOfFriends.get(i);
             Button button = new Button();
             button.setText(friendLogin);
             button.getStyleClass().add("friendButton");
             //button.setOnAction((ActionEvent e) -> dataBase.addFriendship(userLogin,friendLogin));
             friendsList.add(button);
-            listOfFriends.getChildren().add(friendsList.get(i));
+            vBoxListOfFriends.getChildren().add(friendsList.get(i));
         }
         dataBase.closeConnection();
 

@@ -29,12 +29,10 @@ public class LoginController extends SupportForIconButtons {
         PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
         InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
         DataBase connection = new DataBase();
         Client client = Client.getInstance();
         client.setData(printWriter, bufferedReader);
         if(client.checkSignInData(login.getText(), password.getText())){
-            System.out.println(1);
             client.setLogin(login.getText());
             SceneChanger sceneChanger = new SceneChanger("../gui/menu.fxml","../gui/style.css");
             sceneChanger.changeScene();

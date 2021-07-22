@@ -39,7 +39,7 @@
                         <Insets top="20.0" />
                      </padding>
                   </VBox>
-                  <VBox id="leftBar" fx:id="listOfFriends" alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="590.0" prefWidth="251.0" spacing="10.0" style="-fx-opacity: 1;">
+                  <VBox id="leftBar" fx:id="vBoxListOfFriends" alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="590.0" prefWidth="251.0" spacing="10.0" style="-fx-opacity: 1;">
                      <children>
                         <HBox maxWidth="-Infinity" prefHeight="23.0" prefWidth="200.0">
                            <children>
