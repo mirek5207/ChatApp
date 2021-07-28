@@ -1,6 +1,7 @@
 package Controller;
 
 import DataBase.DataBase;
+import Other.DynamicElementGuiBuilder;
 import ServerClient.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,22 +35,11 @@ public class MenuController implements Initializable {
     //method is used when searching for a friend to add him to friends
     @FXML void searchUserByLogin() {
         vBoxForSearchedUserNames.getChildren().clear();
-        List<Button> userList = new LinkedList<>();
-        List<String> userData;
-        DataBase dataBase = new DataBase();
-        userData=dataBase.searchUserByLogin(searchedUserName.getText());
+        List<String> searchedUsersList;
         Client client = Client.getInstance();
-        String userLogin = client.getLogin();
-
-        for(int i=0;i<userData.size();i++){
-            String friendLogin =userData.get(i);
-            Button button = new Button();
-            button.setText(friendLogin);
-            button.getStyleClass().add("addUserButton");
-            button.setOnAction((ActionEvent e) -> dataBase.addFriendship(userLogin,friendLogin));
-            userList.add(button);
-            vBoxForSearchedUserNames.getChildren().add(userList.get(i));
-        }
+        searchedUsersList= client.getListOfSearchedUsers(searchedUserName.getText());
+        DynamicElementGuiBuilder elementGuiBuilder = new DynamicElementGuiBuilder();
+        elementGuiBuilder.createButtons(searchedUsersList,"addUserButton",vBoxForSearchedUserNames,"addFriendship");
         client.getListOfFriends();
     }
 
@@ -59,22 +49,13 @@ public class MenuController implements Initializable {
         loadListOfFriends(client);
     }
     private void loadListOfFriends(Client client){
-        List<String> listOfFriends = new LinkedList<>();
-        listOfFriends = client.getListOfFriends();
-        List<Button> friendsList = new LinkedList<>();
+        List<String> listOfFriends = client.getListOfFriends();
         DataBase dataBase = new DataBase();
-
-        for(int i=0;i<listOfFriends.size();i++){
-            String friendLogin =listOfFriends.get(i);
-            Button button = new Button();
-            button.setText(friendLogin);
-            button.getStyleClass().add("friendButton");
-            //button.setOnAction((ActionEvent e) -> dataBase.addFriendship(userLogin,friendLogin));
-            friendsList.add(button);
-            vBoxListOfFriends.getChildren().add(friendsList.get(i));
-        }
+        DynamicElementGuiBuilder elementGuiBuilder = new DynamicElementGuiBuilder();
+        elementGuiBuilder.createButtons(listOfFriends,"friendButton",vBoxListOfFriends,"openPrivateConversation");
         dataBase.closeConnection();
 
     }
+
 
 }

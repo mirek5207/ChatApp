@@ -1,6 +1,11 @@
 package ServerClient;
 
+import Other.SceneChanger;
+
 import java.io.*;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,8 +27,12 @@ public class Client {
 
         return single_instance;
     }
-    public void setData(PrintWriter printWriter,BufferedReader bufferedReader)
-    {
+    public void initializeReadWriteBuffer() throws IOException {
+
+        Socket socket = new Socket("192.168.8.101", 5056);
+        PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
+        InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         this.printWriter = printWriter;
         this.bufferedReader = bufferedReader;
     }
@@ -71,10 +80,26 @@ public class Client {
         String list = readMessage();
         list = list.substring(1,list.length()-1);
         List<String> listOfFriends = new LinkedList<>(Arrays.asList(list.split(", ")));
-        for(int i =0; i < listOfFriends.size(); i++){
-            System.out.println(listOfFriends.get(i));
-        }
         return listOfFriends;
+    }
+    public List<String> getListOfSearchedUsers(String searchedLoginUser){
+        sendMessage("getListOfSearchedUsers");
+        sendMessage(searchedLoginUser);
+        String list = readMessage();
+        list = list.substring(1,list.length()-1);
+        List<String> listOfSearchedUsers= new LinkedList<>(Arrays.asList(list.split(", ")));
+        return listOfSearchedUsers;
+    }
+    public void addFriendship(String friendLogin){
+        sendMessage("addFriendship");
+        sendMessage(friendLogin);
+
+    }
+    public void openPrivateConversation(String loginFriend){
+        sendMessage("addGroup");
+        sendMessage(loginFriend);
+        SceneChanger sceneChanger = new SceneChanger("../gui/chat.fxml", "../gui/style.css");
+        sceneChanger.changeScene();
     }
 }
 

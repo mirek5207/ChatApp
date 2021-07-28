@@ -1,5 +1,7 @@
 package DataBase;
 
+import com.sun.jdi.Value;
+
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -67,7 +69,33 @@ public class DataBase{
             e.printStackTrace();
         }
     }
-
+    public Integer addGroup(String name){
+        Integer idGroup = null;
+        try{
+            PreparedStatement preparedStatement = this.connection.prepareStatement("INSERT INTO ChatAppDataBase.GroupChat" + "( name) VALUES (?)"  );
+            preparedStatement.setString(1,name);
+            preparedStatement.executeUpdate();
+            PreparedStatement preparedStatement2 = this.connection.prepareStatement("Select groupId From ChatAppDataBase.GroupChat where name = ?");
+            preparedStatement2.setString(1, name);
+            this.resultSet = preparedStatement2.executeQuery();
+            while (resultSet.next()){
+                idGroup = resultSet.getInt("groupId");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return idGroup;
+    }
+    public void addRelationshipUserWidthGroup(Integer groupId,Integer userID){
+        try{
+        PreparedStatement preparedStatement = this.connection.prepareStatement("INSERT INTO ChatAppDataBase.GroupChatUser "+"( groupId, userId)" + " VALUES (?,?);");
+        preparedStatement.setInt(1,groupId);
+        preparedStatement.setInt(2,userID);
+        preparedStatement.executeUpdate();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
     /*public boolean deleteData(String table, String tableId) {
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement("Delete FROM " + table + " Where id = " + Integer.parseInt(tableId) + ";");
@@ -117,6 +145,7 @@ public class DataBase{
             this.resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 searchedUsers.add(resultSet.getString("login"));
+                System.out.println(resultSet.getString("login"));
             }
         } catch (SQLException e) {
            e.printStackTrace();

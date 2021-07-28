@@ -15,6 +15,8 @@ public class ClientHandler extends Thread{
     final PrintWriter printWriter;
     final Socket socket;
     private String login;
+    private String friendLogin = null;
+    private Integer userId;
 
     public ClientHandler(Socket socket, BufferedReader bufferedReader,PrintWriter printWriter) {
         this.socket = socket;
@@ -27,11 +29,9 @@ public class ClientHandler extends Thread{
         DataBase connection = new DataBase();
         String message = null;
         checkSignInData(connection);
-        System.out.println("Login" + login);
         while (true){
             try {
                 message = bufferedReader.readLine();
-                System.out.println(message);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -43,7 +43,7 @@ public class ClientHandler extends Thread{
                 case "getListOfFriends":
                     List<Integer> idOfFriends;
                     List<String> listOfFriends = new LinkedList<>();
-                    Integer userId = connection.getIdOfUser(login);
+                    userId = connection.getIdOfUser(login);
                     idOfFriends = connection.searchIdOfFriends(userId);
                     for(int i = 0 ; i<idOfFriends.size();i++ )
                     {
@@ -53,8 +53,43 @@ public class ClientHandler extends Thread{
                     printWriter.flush();
                     break;
                 case "getListOfSearchedUsers":
-                    List<String> listOfSearchedUsers;
-                    
+                    String searchedUserLogin = null;
+                    while(searchedUserLogin==null){
+                        try {
+                            searchedUserLogin = bufferedReader.readLine();
+                            System.out.println("Szukana nazwa uzytkownika " + searchedUserLogin);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    printWriter.println(connection.searchUserByLogin(searchedUserLogin));
+                    printWriter.flush();
+                    break;
+                case "addFriendship":
+                    while(friendLogin==null){
+                        try {
+                            friendLogin = bufferedReader.readLine();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    connection.addFriendship(login,friendLogin);
+                    break;
+                case "addGroup":
+                    while(friendLogin==null){
+                        try {
+                            friendLogin = bufferedReader.readLine();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Integer idOfFriend = connection.getIdOfUser(friendLogin);
+                    Integer groupId = connection.addGroup(login);
+                    userId = connection.getIdOfUser(login);
+                    connection.addRelationshipUserWidthGroup(groupId,userId);
+                    connection.addRelationshipUserWidthGroup(groupId,idOfFriend);
+                    break;
+
                 default:
                     break;
 
