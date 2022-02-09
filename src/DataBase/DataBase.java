@@ -13,7 +13,7 @@ public class DataBase{
 
     public DataBase() {
         try {
-            this.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/sys", "root","password");
+            this.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/chatappdatabase", "root","Karwowski26@");
             Statement statement = this.connection.createStatement();
             this.resultSet = statement.executeQuery("SELECT * FROM ChatAppDataBase.User");
             /*while (resultSet.next()){
@@ -40,6 +40,7 @@ public class DataBase{
     }
     public int getIdOfUser(String login){
         int id=0 ;
+        System.out.println(login);
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement("Select userId From ChatAppDataBase.User where login = ?");
             preparedStatement.setString(1, login);
@@ -55,7 +56,23 @@ public class DataBase{
         System.out.println(id);
         return id;
     }
+    public List<String> getChatMessages(Integer groupId) {
+        List<String> chatMessages = new LinkedList<>();
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement("SELECT textMessage FROM ChatAppDataBase.message" + " where groupId = ?");
+            preparedStatement.setInt(1,  groupId);
+            this.resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                chatMessages.add(resultSet.getString("textMessage"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("nie znaleziono");
+        }
+        return chatMessages;
+    }
     public void addFriendship(String userLogin,String friendLogin){
+
         int idUser= getIdOfUser(userLogin);
         int idFriend= getIdOfUser(friendLogin);
         System.out.println("user=" + idUser + "friend=" + idFriend);
@@ -64,27 +81,51 @@ public class DataBase{
             preparedStatement.setInt(1, idUser);
             preparedStatement.setInt(2, idFriend);
             preparedStatement.executeUpdate();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    public Integer addGroup(String name){
+    public Integer getIdGroup(String name){
         Integer idGroup = null;
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement("Select groupId From ChatAppDataBase.GroupChat where name = ?");
+            preparedStatement.setString(1, name);
+            this.resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                idGroup = resultSet.getInt("groupId");
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return idGroup;
+    }
+    public void addGroup(String name){
+        //Integer idGroup = null;
         try{
             PreparedStatement preparedStatement = this.connection.prepareStatement("INSERT INTO ChatAppDataBase.GroupChat" + "( name) VALUES (?)"  );
             preparedStatement.setString(1,name);
             preparedStatement.executeUpdate();
-            PreparedStatement preparedStatement2 = this.connection.prepareStatement("Select groupId From ChatAppDataBase.GroupChat where name = ?");
+           /* PreparedStatement preparedStatement2 = this.connection.prepareStatement("Select groupId From ChatAppDataBase.GroupChat where name = ?");
             preparedStatement2.setString(1, name);
             this.resultSet = preparedStatement2.executeQuery();
             while (resultSet.next()){
                 idGroup = resultSet.getInt("groupId");
-            }
+            }*/
         }catch (SQLException e){
             e.printStackTrace();
         }
-        return idGroup;
+
+    }
+    public void addMessage(String textMessage,Integer userId,Integer groupId){
+        try{
+            PreparedStatement preparedStatement = this.connection.prepareStatement("INSERT INTO ChatAppDataBase.message" + "( textMessage, userId, groupId) VALUES (?,?,?);");
+            preparedStatement.setString(1,textMessage);
+            preparedStatement.setInt(2,userId);
+            preparedStatement.setInt(3,groupId);
+            preparedStatement.executeUpdate();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
     }
     public void addRelationshipUserWidthGroup(Integer groupId,Integer userID){
         try{
@@ -96,6 +137,7 @@ public class DataBase{
             e.printStackTrace();
         }
     }
+
     /*public boolean deleteData(String table, String tableId) {
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement("Delete FROM " + table + " Where id = " + Integer.parseInt(tableId) + ";");

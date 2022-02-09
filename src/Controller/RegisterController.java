@@ -15,8 +15,9 @@ public class RegisterController extends SupportForIconButtons {
         DataBase connect = new DataBase();
         connect.addData("User",login.getText(),password.getText(),email.getText());
         connect.closeConnection();
-        SceneChanger sceneChanger = new SceneChanger("../gui/login.fxml","../gui/login.css");
+        SceneChanger sceneChanger = new SceneChanger("../gui/fxml/login.fxml","../gui/css/login.css");
         sceneChanger.changeScene();
+
     }
 
 }

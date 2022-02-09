@@ -1,16 +1,10 @@
 <component name="libraryTable">
   <library name="javafx">
-    <CLASSES>
-      <root url="file://$USER_HOME$/Pobrane/javafx/javafx-sdk-11.0.2/lib" />
-    </CLASSES>
+    <CLASSES />
     <JAVADOC />
     <NATIVE>
-      <root url="file://$USER_HOME$/Pobrane/javafx/javafx-sdk-11.0.2/lib" />
+      <root url="file://$PROJECT_DIR$/library/javafx-sdk-17.0.1/bin" />
     </NATIVE>
-    <SOURCES>
-      <root url="file://$USER_HOME$/Pobrane/javafx/javafx-sdk-11.0.2/lib" />
-    </SOURCES>
-    <jarDirectory url="file://$USER_HOME$/Pobrane/javafx/javafx-sdk-11.0.2/lib" recursive="false" />
-    <jarDirectory url="file://$USER_HOME$/Pobrane/javafx/javafx-sdk-11.0.2/lib" recursive="false" type="SOURCES" />
+    <SOURCES />
   </library>
 </component>

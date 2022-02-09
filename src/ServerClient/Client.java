@@ -3,9 +3,7 @@ package ServerClient;
 import Other.SceneChanger;
 
 import java.io.*;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,6 +15,7 @@ public class Client {
     private PrintWriter printWriter;
     private BufferedReader bufferedReader;
     private static Client single_instance = null;
+    private String loginFriend;
 
     private Client(){
     }
@@ -29,7 +28,7 @@ public class Client {
     }
     public void initializeReadWriteBuffer() throws IOException {
 
-        Socket socket = new Socket("192.168.8.101", 5056);
+        Socket socket = new Socket("localhost", 5056);
         PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
         InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -41,7 +40,7 @@ public class Client {
         this.login = login;
     }
 
-    public void sendMessage(String message) {
+    public void sendMessageToServer(String message) {
         printWriter.println(message);
         printWriter.flush();
 
@@ -61,45 +60,62 @@ public class Client {
     //client sending login and password to server to check if it is correct
     public boolean checkSignInData(String login, String password) throws IOException {
         String message;
-        sendMessage(login);
-        sendMessage(password);
+        sendMessageToServer(login);
+        sendMessageToServer(password);
         message = readMessage();
         System.out.println(message);
         if(message.contains("true")) return true;
         else return false;
     }
-    public String getLogin() { return this.login; }
+    public String getLogin() {
+        return this.login;
+    }
     public Integer getId(){
         Integer id;
-        sendMessage("getId");
+        sendMessageToServer("getId");
         id = Integer.parseInt(readMessage());
         return id;
     }
     public List<String> getListOfFriends(){
-        sendMessage("getListOfFriends");
+        sendMessageToServer("getListOfFriends");
         String list = readMessage();
         list = list.substring(1,list.length()-1);
         List<String> listOfFriends = new LinkedList<>(Arrays.asList(list.split(", ")));
         return listOfFriends;
     }
     public List<String> getListOfSearchedUsers(String searchedLoginUser){
-        sendMessage("getListOfSearchedUsers");
-        sendMessage(searchedLoginUser);
+        sendMessageToServer("getListOfSearchedUsers");
+        sendMessageToServer(searchedLoginUser);
         String list = readMessage();
         list = list.substring(1,list.length()-1);
         List<String> listOfSearchedUsers= new LinkedList<>(Arrays.asList(list.split(", ")));
         return listOfSearchedUsers;
     }
     public void addFriendship(String friendLogin){
-        sendMessage("addFriendship");
-        sendMessage(friendLogin);
-
+        System.out.println("Client friendlogin:" + friendLogin);
+        sendMessageToServer("addFriendship");
+        sendMessageToServer(friendLogin);
+    }
+    public List<String> getChatMessages(){
+        sendMessageToServer("loadChatMessages");
+        sendMessageToServer(this.loginFriend);
+        System.out.println("Konwersacja:" + this.loginFriend);
+        String list = readMessage();
+        list = list.substring(1,list.length()-1);
+        List<String> messages= new LinkedList<>(Arrays.asList(list.split(", ")));
+        return messages;
     }
     public void openPrivateConversation(String loginFriend){
-        sendMessage("addGroup");
-        sendMessage(loginFriend);
-        SceneChanger sceneChanger = new SceneChanger("../gui/chat.fxml", "../gui/style.css");
+        this.loginFriend = loginFriend;
+        SceneChanger sceneChanger = new SceneChanger("../gui/fxml/chat.fxml", "../gui/css/style.css");
         sceneChanger.changeScene();
+    }
+    public void sendMessageToChat(String message){
+        sendMessageToServer("sendMessage");
+        System.out.println("Wiadomość:" + message);
+        System.out.println("Przyjaciel:" + this.loginFriend);
+        sendMessageToServer(loginFriend);
+        sendMessageToServer(message);
     }
 }
 

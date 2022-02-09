@@ -11,7 +11,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         stage = primaryStage;
-        SceneChanger sceneChanger = new SceneChanger("../gui/login.fxml","../gui/login.css");
+        SceneChanger sceneChanger = new SceneChanger("../gui/fxml/login.fxml","../gui/css/login.css");
         sceneChanger.changeScene();
     }
 

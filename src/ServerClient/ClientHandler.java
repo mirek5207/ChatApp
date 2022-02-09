@@ -16,6 +16,7 @@ public class ClientHandler extends Thread{
     final Socket socket;
     private String login;
     private String friendLogin = null;
+    private String message = null;
     private Integer userId;
 
     public ClientHandler(Socket socket, BufferedReader bufferedReader,PrintWriter printWriter) {
@@ -27,14 +28,15 @@ public class ClientHandler extends Thread{
     @Override
     public void run() {
         DataBase connection = new DataBase();
-        String message = null;
+        String message ;
         checkSignInData(connection);
         while (true){
             try {
                 message = bufferedReader.readLine();
             } catch (IOException e) {
-                e.printStackTrace();
+                message = null;
             }
+
             switch (message){
                 case "getId":
                     printWriter.println(connection.getIdOfUser(login));
@@ -66,30 +68,76 @@ public class ClientHandler extends Thread{
                     printWriter.flush();
                     break;
                 case "addFriendship":
+                    friendLogin = null;
                     while(friendLogin==null){
                         try {
                             friendLogin = bufferedReader.readLine();
+                            System.out.println("Login przyjaciela : ClientHandler" +  friendLogin);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
                     connection.addFriendship(login,friendLogin);
+                    connection.addGroup(login+"-"+friendLogin);
+                    Integer idOfFriend = connection.getIdOfUser(friendLogin);
+                    Integer groupId = connection.getIdGroup(login);
+                    userId = connection.getIdOfUser(login);
+                    connection.addRelationshipUserWidthGroup(groupId,userId);
+                    connection.addRelationshipUserWidthGroup(groupId,idOfFriend);
+                    friendLogin = null;
                     break;
                 case "addGroup":
-                    while(friendLogin==null){
+
+                    /*while(friendLogin==null) {
                         try {
                             friendLogin = bufferedReader.readLine();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                    }
-                    Integer idOfFriend = connection.getIdOfUser(friendLogin);
-                    Integer groupId = connection.addGroup(login);
-                    userId = connection.getIdOfUser(login);
-                    connection.addRelationshipUserWidthGroup(groupId,userId);
-                    connection.addRelationshipUserWidthGroup(groupId,idOfFriend);
+                    }*/
+
                     break;
 
+                case "sendMessage":
+                    friendLogin = null;
+                    message = null;
+                    while(friendLogin==null || message==null) {
+                        try {
+                            friendLogin = bufferedReader.readLine();
+                            message = bufferedReader.readLine();
+                            /*System.out.println("wiadomosc:" + message);
+                            System.out.println("Drugi użytkwnik:" + friendLogin);*/
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    userId = connection.getIdOfUser(login);
+                    groupId = connection.getIdGroup(login + "-" + friendLogin);
+                    if(groupId == null) groupId = connection.getIdGroup(friendLogin + "-" + login);
+                    System.out.println("grupa id : " + friendLogin + "-" + login);
+                    connection.addMessage(message,userId,groupId);
+                    break;
+                case "loadChatMessages":
+                    friendLogin = null;
+                    List<String> chatMessages;
+                    while(friendLogin==null){
+                        try {
+                            friendLogin = bufferedReader.readLine();
+                            System.out.println("Login przyjaciela : ClientHandler" +  friendLogin);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    userId = connection.getIdOfUser(login);
+                    groupId = connection.getIdGroup(login + "-" + friendLogin);
+                    if(groupId == null) groupId = connection.getIdGroup(friendLogin + "-" + login);
+                    userId = connection.getIdOfUser(login);
+                    chatMessages = connection.getChatMessages(groupId);
+                    System.out.println(chatMessages);
+                    printWriter.println(chatMessages);
+                    printWriter.flush();
+                    break;
                 default:
                     break;
 
