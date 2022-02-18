@@ -59,10 +59,13 @@ public class DataBase{
     public List<String> getChatMessages(Integer groupId) {
         List<String> chatMessages = new LinkedList<>();
         try {
-            PreparedStatement preparedStatement = this.connection.prepareStatement("SELECT textMessage FROM ChatAppDataBase.message" + " where groupId = ?");
+            PreparedStatement preparedStatement = this.connection.prepareStatement("SELECT user.login, message.textMessage FROM ChatAppDataBase.user INNER JOIN message ON user.userId = message.userId AND message.groupId = ? ORDER BY message.messageId" );
             preparedStatement.setInt(1,  groupId);
             this.resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
+                System.out.println(resultSet.getString("login"));
+                System.out.println(resultSet.getString("textMessage"));
+                chatMessages.add(resultSet.getString("login"));
                 chatMessages.add(resultSet.getString("textMessage"));
             }
         } catch (SQLException e) {
@@ -105,12 +108,6 @@ public class DataBase{
             PreparedStatement preparedStatement = this.connection.prepareStatement("INSERT INTO ChatAppDataBase.GroupChat" + "( name) VALUES (?)"  );
             preparedStatement.setString(1,name);
             preparedStatement.executeUpdate();
-           /* PreparedStatement preparedStatement2 = this.connection.prepareStatement("Select groupId From ChatAppDataBase.GroupChat where name = ?");
-            preparedStatement2.setString(1, name);
-            this.resultSet = preparedStatement2.executeQuery();
-            while (resultSet.next()){
-                idGroup = resultSet.getInt("groupId");
-            }*/
         }catch (SQLException e){
             e.printStackTrace();
         }

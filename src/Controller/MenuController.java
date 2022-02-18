@@ -51,6 +51,9 @@ public class MenuController implements Initializable {
         elementGuiBuilder.createButtons(listOfFriends,"friendButton",vBoxListOfFriends,"openPrivateConversation");
         dataBase.closeConnection();
     }
-
+    @FXML
+    void logout(ActionEvent event) {
+        System.exit(0);
+    }
 
 }

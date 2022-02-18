@@ -1,15 +1,72 @@
 #body,.centerBar{
     -fx-background-color:#0d1117;
 }
+#chatBox{
+    -fx-background: #090c10;
+    -fx-background-color: #090c10;
+}
+.thumb{
+    -fx-background-color: black;
+}
+.track{
+    -fx-background-color: #344050;
+}
+
+.scroll-bar:vertical .increment-button ,
+.scroll-bar:vertical .decrement-button ,
+.scroll-bar:vertical .decrement-corner {
+    -fx-background-color:white;
+    -fx-background:white;
+    -fx-control-inner-background:white;
+    -fx-border-width:0.5px;
+    -fx-border-color:white;
+	-fx-padding:0 0 10px 0;
+}
+.scroll-bar:vertical .increment-arrow ,
+.scroll-bar:vertical .decrement-arrow{
+    -fx-shape : " ";
+    -fx-border: none;
+    -fx-background-color:#161b22;
+    -fx-background:#161b22;
+    -fx-control-inner-background: #161b22;
+}
 #leftBar,#rightBar{
     -fx-background-color:#161b22;
     -fx-border-color:white;
+    -fx-text-fill: white;
 }
-#leftBar{
+#leftBar,#leftBarNav{
     -fx-border-width: 0 0.4px 0 0;
+    -fx-border-color:white;
+}
+#messageToSendTextField{
+    -fx-background-color:#161b22;
+    -fx-control-inner-background: #161b22;
+    -fx-background:#161b22;
 }
 #rightBar{
     -fx-border-width: 0 0 0 0.4px;
+}
+.messageBox{
+    -fx-control-inner-background: #090c10;
+    -fx-background-color:#090c10;
+    -fx-background:#090c10;
+    -fx-opacity:1.0;
+    -fx-border-color:gray;
+    -fx-border-width:0px;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill:white;
+}
+.userNameTextBox{
+
+    -fx-background-color: #090c10;
+    -fx-control-inner-background: #090c10;
+    -fx-text-fill: orange;
+}
+.friendNameTextBox{
+    -fx-background-color: #090c10;
+    -fx-control-inner-background: #090c10;
+    -fx-text-fill: green;
 }
 #textField{
     -fx-background-color: #1e1e1e;
@@ -26,6 +83,7 @@
 .buttonLeftBar:hover{
     -fx-background-color: #00B0B1;
 }
+
 .textArea{
     -fx-control-inner-background: #090c10;
     -fx-background-color:#090c10;
@@ -60,12 +118,29 @@
     -fx-text-fill:white;
     -fx-max-width:200px;
     -fx-pref-width:200px;
+    -fx-min-height:25px;
 }
-.addUserButton:hover,.friendButton:hover{
+.friendButtonClicked{
+    -fx-alignment: CENTER;
+    -fx-background-color: #1e242e;
+    -fx-text-fill:white;
+    -fx-max-width:200px;
+    -fx-pref-width:200px;
+    -fx-min-height:25px;
+    -fx-border-width: 0 0 0 2px;
+    -fx-border-color: blue;
+
+}
+.addUserButton:hover{
     -fx-background-color: teal;
 }
 .button{
     -fx-background-color: transparent ;
+}
+.button:focused{
+    -fx-background-color: #1e242e;
+    -fx-border-width: 0 0 0 2px;
+    -fx-border-color: gray;
 }
 .button:hover{
     -fx-background-color:#1e242e;

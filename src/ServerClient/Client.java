@@ -112,8 +112,6 @@ public class Client {
     }
     public void sendMessageToChat(String message){
         sendMessageToServer("sendMessage");
-        System.out.println("Wiadomość:" + message);
-        System.out.println("Przyjaciel:" + this.loginFriend);
         sendMessageToServer(loginFriend);
         sendMessageToServer(message);
     }

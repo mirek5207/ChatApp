@@ -3,17 +3,17 @@ package Other;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import sample.Main;
-
+import javafx.geometry.Rectangle2D;
 import java.io.IOException;
 import java.util.Objects;
 
 public class SceneChanger  {
     private final String pathScene;
     private final String pathCss;
-    public static Stage stage2;
 
     public SceneChanger (String pathToScene,String pathToCss){
         this.pathScene = pathToScene;
@@ -21,10 +21,12 @@ public class SceneChanger  {
     }
     public void changeScene()
     {
+        // get screensize of monitor
+        Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
         try{
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(pathScene));
             Parent root1 = fxmlLoader.load();
-            Scene scene = new Scene(root1);
+            Scene scene = new Scene(root1,screenSize.getWidth(),screenSize.getHeight());
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource(pathCss)).toExternalForm());
             Main.stage.setMaximized(true);
             Main.stage.setScene(scene);
