@@ -14,16 +14,18 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 
-public class MenuController implements Initializable {
+public class MenuController implements Initializable,InnerController {
 
 
     @FXML private TextField searchedUserName;
     @FXML private TextField userName;
     @FXML private VBox vBoxForSearchedUserNames;
     @FXML private VBox vBoxListOfFriends;
+    @FXML private VBox activeUsers;
+    @FXML private VBox notActiveUsers;
 
     @FXML
-    void addGroup(ActionEvent event) {
+    public void addGroup(ActionEvent event) {
         SceneChanger sceneChanger = new SceneChanger("../gui/fxml/group.fxml","../gui/css/group.css");
         sceneChanger.createSecondStage();
     }
@@ -52,8 +54,11 @@ public class MenuController implements Initializable {
         dataBase.closeConnection();
     }
     @FXML
-    void logout(ActionEvent event) {
+    public void logout(ActionEvent event) {
+        Client client = Client.getInstance();
+        client.logout();
         System.exit(0);
     }
+
 
 }

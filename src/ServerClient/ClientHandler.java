@@ -138,6 +138,9 @@ public class ClientHandler extends Thread{
                     printWriter.println(chatMessages);
                     printWriter.flush();
                     break;
+                case "logout":
+                    connection.updateStatus("user", login,false);
+                    break;
                 default:
                     break;
 
@@ -156,6 +159,7 @@ public class ClientHandler extends Thread{
         }
         if(connection.checkSignInData(login,password)){
             printWriter.println(true);
+            connection.updateStatus("user", login, true);
         }
         else {
             printWriter.println(false);

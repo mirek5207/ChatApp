@@ -26,10 +26,11 @@ public class DataBase{
     }
     public boolean addData(String table ,String login, String password,String email) {
         try {
-            PreparedStatement preparedStatement = this.connection.prepareStatement("INSERT INTO ChatAppDataBase." + table +"( login, password, email )" + " VALUES (?,?,?);");
+            PreparedStatement preparedStatement = this.connection.prepareStatement("INSERT INTO ChatAppDataBase." + table +"( login, password, email, accountStatus )" + " VALUES (?,?,?,?);");
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
             preparedStatement.setString(3, email);
+            preparedStatement.setBoolean(4,false);
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException var5) {
@@ -159,6 +160,18 @@ public class DataBase{
             return false;
         }
     }*/
+    public boolean updateStatus(String tabelName, String login, boolean status) {
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement("Update " + tabelName + " Set accountStatus = ?  Where login = ?");
+            preparedStatement.setBoolean(1, status);
+            preparedStatement.setString(2,login);
+            preparedStatement.execute();
+            return true;
+        } catch (SQLException var6) {
+            System.err.println("Błąd przy wprowadzaniu danych studenta: " + var6.getMessage());
+            return false;
+        }
+    }
     public boolean checkSignInData(String login, String password) {
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement("SELECT login,password FROM ChatAppDataBase.User" + " where login = ? AND password = ?");

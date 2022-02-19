@@ -1,7 +1,5 @@
 package Controller;
 
-import java.util.Collections;
-
 import Other.DynamicElementGuiBuilder;
 import ServerClient.Client;
 import javafx.fxml.FXML;
@@ -15,7 +13,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 
-public class ChatController extends MenuController {
+public class ChatController extends MenuController implements InnerController {
     @FXML
     private VBox vBoxListOfFriends;
 
@@ -37,13 +35,13 @@ public class ChatController extends MenuController {
 
 
     @FXML
-    void addGroup(ActionEvent event) {
+    public void addGroup(ActionEvent event) {
         super.addGroup(event);
     }
 
 
     @FXML
-    void logout(ActionEvent event) {
+    public void logout(ActionEvent event) {
         super.logout(event);
     }
 

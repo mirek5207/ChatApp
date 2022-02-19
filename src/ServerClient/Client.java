@@ -115,5 +115,8 @@ public class Client {
         sendMessageToServer(loginFriend);
         sendMessageToServer(message);
     }
+    public void logout(){
+        sendMessageToServer("logout");
+    }
 }
 
