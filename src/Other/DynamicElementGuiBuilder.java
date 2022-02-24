@@ -23,34 +23,36 @@ public class DynamicElementGuiBuilder {
         List<Button> buttonList = new LinkedList<>();
         Client client = Client.getInstance();
         for(int i=0;i<list.size();i++){
-            Button button = new Button();
-            button.setText(list.get(i));
-            button.getStyleClass().add(buttonStyleClass);
-            buttonList.add(button);
-            int finalI = i;
-            switch (methodOnClick) {
-                case "addFriendship":
-                    button.setOnMouseClicked(
-                            (EventHandler) event -> {
-                                client.addFriendship(list.get(finalI));
-                            });
-                    break;
-                case "openPrivateConversation":
-                    button.setOnAction((ActionEvent e) -> {
-                        indexOfClickedButton = finalI;
-                        client.openPrivateConversation(list.get(finalI));
-                    });
-                default:
-                    break;
+            if(!list.get(i).equals("")){
+                Button button = new Button();
+                button.setText(list.get(i));
+                button.getStyleClass().add(buttonStyleClass);
+                buttonList.add(button);
+                int finalI = i;
+                switch (methodOnClick) {
+                    case "addFriendship":
+                        button.setOnMouseClicked(
+                                (EventHandler) event -> {
+                                    client.addFriendship(list.get(finalI));
+                                });
+                        break;
+                    case "openPrivateConversation":
+                        button.setOnAction((ActionEvent e) -> {
+                            if(buttonStyleClass == "friendButton") indexOfClickedButton = finalI;
+                            client.openPrivateConversation(list.get(finalI));
+                        });
+                    default:
+                        break;
+                }
+                parentOfButton.getChildren().add(buttonList.get(i));
             }
-
-            parentOfButton.getChildren().add(buttonList.get(i));
-        }
-        if(indexOfClickedButton != -1){
-            parentOfButton.getChildren().get(indexOfClickedButton+3).getStyleClass().removeAll("button","friendButton");
-            parentOfButton.getChildren().get(indexOfClickedButton+3).getStyleClass().add("friendButtonClicked");
         }
 
+        if(indexOfClickedButton != -1 ){
+            parentOfButton.getChildren().get(indexOfClickedButton).getStyleClass().removeAll("button","friendButton");
+            parentOfButton.getChildren().get(indexOfClickedButton).getStyleClass().add("friendButtonClicked");
+        }
+        indexOfClickedButton = -1;
 
     }
     public void creatTextBox(List<String> list, VBox containerForTextArea, String styleClassOfTextArea){

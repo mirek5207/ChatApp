@@ -11,37 +11,23 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 
 public class ChatController extends MenuController implements InnerController {
-    @FXML
-    private VBox vBoxListOfFriends;
 
-    @FXML
-    private TextField userName;
-
-    @FXML
-    private TextArea textArea;
-
-    @FXML
-    private TextArea textField;
-
-    @FXML
-    private TextArea clientData;
-
-    @FXML
-    private VBox vBoxChat;
+    @FXML private VBox vBoxListOfFriends;
+    @FXML private TextField userName;
+    @FXML private TextArea textField;
+    @FXML private VBox vBoxChat;
+    @FXML private VBox activeUsers;
+    @FXML private VBox notActiveUsers;
 
 
-
-    @FXML
-    public void addGroup(ActionEvent event) {
+    @FXML public void addGroup(ActionEvent event) {
         super.addGroup(event);
     }
-
-
-    @FXML
-    public void logout(ActionEvent event) {
+    @FXML public void logout(ActionEvent event) {
         super.logout(event);
     }
 
@@ -57,7 +43,7 @@ public class ChatController extends MenuController implements InnerController {
         displayMessages(client);
     }
     private void displayMessages(Client client){
-        List <String> list = new LinkedList<>();
+        List <String> list;
         list = client.getChatMessages();
         DynamicElementGuiBuilder guiBuilder = new DynamicElementGuiBuilder();
         guiBuilder.creatTextBox(list,vBoxChat,"messageBox");

@@ -1,7 +1,5 @@
 package DataBase;
 
-import com.sun.jdi.Value;
-
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,9 +14,6 @@ public class DataBase{
             this.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/chatappdatabase", "root","Karwowski26@");
             Statement statement = this.connection.createStatement();
             this.resultSet = statement.executeQuery("SELECT * FROM ChatAppDataBase.User");
-            /*while (resultSet.next()){
-                System.out.println(resultSet.getInt(1)+ resultSet.getString("login") + resultSet.getString("email") + resultSet.getString("password"));
-            }*/
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
         }
@@ -146,23 +141,10 @@ public class DataBase{
             return false;
         }
     }*/
-    /*public boolean updateData(String tabelName, String id, String surName, String name) {
+
+    public boolean updateStatus(String tableName, String login, boolean status) {
         try {
-            PreparedStatement preparedStatement = this.connection.prepareStatement("Update " + tabelName + " Set surName = ? , name = ? Where id = ?");
-            preparedStatement.setString(1, surName);
-            preparedStatement.setString(2, name);
-            preparedStatement.setInt(3, Integer.parseInt(id));
-            preparedStatement.execute();
-            return true;
-        } catch (SQLException var6) {
-            System.err.println("Błąd przy wprowadzaniu danych studenta: " + surName + " " + name);
-            System.err.println("Błąd przy wprowadzaniu danych studenta: " + var6.getMessage());
-            return false;
-        }
-    }*/
-    public boolean updateStatus(String tabelName, String login, boolean status) {
-        try {
-            PreparedStatement preparedStatement = this.connection.prepareStatement("Update " + tabelName + " Set accountStatus = ?  Where login = ?");
+            PreparedStatement preparedStatement = this.connection.prepareStatement("Update " + tableName + " Set accountStatus = ?  Where login = ?");
             preparedStatement.setBoolean(1, status);
             preparedStatement.setString(2,login);
             preparedStatement.execute();
@@ -239,7 +221,21 @@ public class DataBase{
 
         return searchedIdOfFriends;
     }
-
+    public int isUserOnline(int id){
+        Integer accountStatus = null;
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement("SELECT accountStatus FROM ChatAppDataBase.User" + " where userId = ?");
+            preparedStatement.setInt(1, id);
+            this.resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                accountStatus = resultSet.getInt("accountStatus");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("nie znaleziono");
+        }
+        return accountStatus;
+    }
     public void closeConnection() {
         try {
             this.connection.close();

@@ -131,6 +131,22 @@
     -fx-border-color: blue;
 
 }
+.onlineUser,.offlineUser{
+    -fx-margin-left:5px;
+    -fx-alignment: center-left;
+    -fx-background-color:#0d1117;
+    -fx-text-fill:white;
+    -fx-max-width:200px;
+    -fx-pref-width:200px;
+    -fx-min-height:25px;
+    -fx-border-width: 0 0 0 2px;
+}
+.onlineUser{
+    -fx-border-color: green;
+}
+.offlineUser{
+    -fx-border-color: red;
+}
 .addUserButton:hover{
     -fx-background-color: teal;
 }

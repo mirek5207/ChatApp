@@ -83,6 +83,20 @@ public class Client {
         List<String> listOfFriends = new LinkedList<>(Arrays.asList(list.split(", ")));
         return listOfFriends;
     }
+    public List<String> getListOfOnlineFriends(){
+        sendMessageToServer("getOnlineFriends");
+        String list = readMessage();
+        list = list.substring(1,list.length()-1);
+        List<String> onlineListOfFriends = new LinkedList<>(Arrays.asList(list.split(", ")));
+        return onlineListOfFriends;
+    }
+    public List<String> getListOfOfflineFriends(){
+        sendMessageToServer("getOfflineUsers");
+        String list = readMessage();
+        list = list.substring(1,list.length()-1);
+        List<String> offlineListOfFriends = new LinkedList<>(Arrays.asList(list.split(", ")));
+        return offlineListOfFriends;
+    }
     public List<String> getListOfSearchedUsers(String searchedLoginUser){
         sendMessageToServer("getListOfSearchedUsers");
         sendMessageToServer(searchedLoginUser);

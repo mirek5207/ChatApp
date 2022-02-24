@@ -47,11 +47,38 @@ public class ClientHandler extends Thread{
                     List<String> listOfFriends = new LinkedList<>();
                     userId = connection.getIdOfUser(login);
                     idOfFriends = connection.searchIdOfFriends(userId);
+
                     for(int i = 0 ; i<idOfFriends.size();i++ )
                     {
                         listOfFriends.add(connection.searchUserById(idOfFriends.get(i)));
                     }
                     printWriter.println(listOfFriends);
+                    printWriter.flush();
+                    break;
+                case "getOnlineFriends":
+                    List<String> onlineFriends = new LinkedList<>();
+                    userId = connection.getIdOfUser(login);
+                    idOfFriends = connection.searchIdOfFriends(userId);
+                    for(int i = 0 ; i<idOfFriends.size();i++ )
+                    {
+                        if(connection.isUserOnline(idOfFriends.get(i)) == 1){
+                            onlineFriends.add(connection.searchUserById(idOfFriends.get(i)));
+                        }
+                    }
+                    printWriter.println(onlineFriends);
+                    printWriter.flush();
+                    break;
+                case "getOfflineUsers":
+                    List<String> offlineFriends = new LinkedList<>();
+                    userId = connection.getIdOfUser(login);
+                    idOfFriends = connection.searchIdOfFriends(userId);
+                    for(int i = 0 ; i<idOfFriends.size();i++ )
+                    {
+                        if(connection.isUserOnline(idOfFriends.get(i)) == 0){
+                            offlineFriends.add(connection.searchUserById(idOfFriends.get(i)));
+                        }
+                    }
+                    printWriter.println(offlineFriends);
                     printWriter.flush();
                     break;
                 case "getListOfSearchedUsers":

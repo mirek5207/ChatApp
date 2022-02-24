@@ -149,13 +149,25 @@
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <VBox fx:id="activeUsers" prefHeight="275.0" prefWidth="233.0" />
+                  <VBox fx:id="activeUsers" prefHeight="275.0" prefWidth="233.0" spacing="10.0">
+                     <padding>
+                        <Insets left="15.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin></VBox>
                   <Text fill="#ffffffc7" layoutX="20.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Niedostępny" wrappingWidth="200.0">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <VBox fx:id="notActiveUsers" layoutX="10.0" layoutY="20.0" prefHeight="200.0" prefWidth="100.0" />
+                  <VBox fx:id="notActiveUsers" layoutX="10.0" layoutY="20.0" prefHeight="259.0" prefWidth="233.0" spacing="10.0">
+                     <padding>
+                        <Insets left="15.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin></VBox>
                </children>
             </VBox>
          </right>
